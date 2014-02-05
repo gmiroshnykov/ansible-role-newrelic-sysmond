@@ -8,6 +8,7 @@ Role Variables
 --------------
 
     newrelic_sysmond:
+      enabled: false    # change to true after you add the license key below
       license_key: ""   # NewRelic license key
 
 
