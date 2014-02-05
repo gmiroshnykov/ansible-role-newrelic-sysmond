@@ -4,15 +4,9 @@
 
 - name: add repository
   sudo: true
-  apt_repository:
+  apt_repository: >
     repo='deb http://apt.newrelic.com/debian/ newrelic non-free'
     state=present
-  register: result
-
-- name: apt-get update
-  sudo: true
-  apt: update_cache=yes
-  when: result.changed
 
 - name: install package
   sudo: true
@@ -21,15 +15,10 @@
 
 - name: generate config
   sudo: true
-  template:
+  template: >
     src=nrsysmond.cfg.j2
     dest=/etc/newrelic/nrsysmond.cfg
     owner=root
     group=newrelic
     mode=0640
   notify: restart newrelic-sysmond
-
-- name: shutdown if disabled
-  sudo: true
-  action: service name=newrelic-sysmond state=stopped enabled=no
-  when: newrelic.enabled == False
