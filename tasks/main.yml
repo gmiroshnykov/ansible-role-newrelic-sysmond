@@ -1,17 +1,20 @@
 - name: add APT key
   sudo: true
   apt_key: url=https://download.newrelic.com/548C16BF.gpg state=present
+  when: newrelic_sysmond.enabled
 
 - name: add repository
   sudo: true
   apt_repository: >
     repo='deb http://apt.newrelic.com/debian/ newrelic non-free'
     state=present
+  when: newrelic_sysmond.enabled
 
 - name: install package
   sudo: true
   apt: pkg=newrelic-sysmond
   notify: restart newrelic-sysmond
+  when: newrelic_sysmond.enabled
 
 - name: generate config
   sudo: true
@@ -22,3 +25,4 @@
     group=newrelic
     mode=0640
   notify: restart newrelic-sysmond
+  when: newrelic_sysmond.enabled
